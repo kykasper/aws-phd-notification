@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Description: >-
+  alert aws personal health dashboard.
+
+Parameters:
+  NortificationMail:
+    Description: email address for notification
+    Type: String
+
+Resources:
+  CloudWatchEventRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: watchphd
+      State: ENABLED
+      Targets:
+        - Arn: !Ref AlertNotification
+          Id: snstopic-1
+      Description: Watch AWS Personal HealthDashboard
+      EventPattern: {"source":["aws.health"]}
+      RoleArn: String
+
+  AlertNotification:
+      Type: AWS::SNS::Topic
+      Properties:
+          DisplayName: AlertNotification
+          Subscription:
+              - Endpoint:
+                  Ref: NortificationMail
+                Protocol: email
+          TopicName: AlertNotification
+
