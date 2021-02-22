@@ -9,6 +9,16 @@ Parameters:
     Type: String
 
 Resources:
+  AlertNotification:
+      Type: AWS::SNS::Topic
+      Properties:
+          DisplayName: AlertNotification
+          Subscription:
+              - Endpoint:
+                  Ref: NortificationMail
+                Protocol: email
+          TopicName: AlertNotification
+
   CloudWatchEventRule:
     Type: AWS::Events::Rule
     Properties:
@@ -19,15 +29,6 @@ Resources:
           Id: snstopic-1
       Description: Watch AWS Personal HealthDashboard
       EventPattern: {"source":["aws.health"]}
-      RoleArn: String
 
-  AlertNotification:
-      Type: AWS::SNS::Topic
-      Properties:
-          DisplayName: AlertNotification
-          Subscription:
-              - Endpoint:
-                  Ref: NortificationMail
-                Protocol: email
-          TopicName: AlertNotification
+
 
